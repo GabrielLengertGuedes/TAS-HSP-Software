@@ -1,0 +1,26 @@
+{
+  "name": "tas-hsp-software",
+  "version": "1.0.0",
+  "description": "Encurtador de links - Desafio HSP Software",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielLengertGuedes/TAS-HSP-Software.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabrielLengertGuedes/TAS-HSP-Software/issues"
+  },
+  "homepage": "https://github.com/GabrielLengertGuedes/TAS-HSP-Software#readme",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.2.1"
+  },
+  "private": true
+}
