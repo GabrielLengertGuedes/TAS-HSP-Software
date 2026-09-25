@@ -10,3 +10,4 @@ Regras:
 - Não adicione dependências sem me perguntar.
 - Sem emojis em código, logs ou documentação.
 - Não execute pacotes via npx sem me perguntar antes.
+- Responda sempre em português.
