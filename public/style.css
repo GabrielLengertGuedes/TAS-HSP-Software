@@ -1,0 +1,488 @@
+/* Cores em variáveis para o tema escuro só redefinir os valores */
+:root {
+  color-scheme: light dark;
+
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1b1f24;
+  --muted: #5a6270;
+  --border: #d9dde3;
+  --accent: #2350c8;
+  --accent-strong: #1a3d9e;
+  --on-accent: #ffffff;
+  --error: #b42318;
+  --error-bg: #fef3f2;
+  --success: #067647;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111418;
+    --surface: #1b1f24;
+    --text: #e8eaed;
+    --muted: #9aa3ae;
+    --border: #2e343c;
+    --accent: #7aa2ff;
+    --accent-strong: #a3c0ff;
+    --on-accent: #111418;
+    --error: #ff8a80;
+    --error-bg: #3a1c1a;
+    --success: #6fd6a2;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+}
+
+h4 {
+  font-size: 1rem;
+}
+
+p {
+  margin: 0 0 0.75rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--accent-strong);
+}
+
+/* Foco visível em qualquer elemento navegável pelo teclado */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Título que recebe foco via JS (tabindex="-1") não precisa do anel */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Esconde da tela, mas mantém para leitores de tela */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Layout */
+
+.container {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.subtitle {
+  color: var(--muted);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Formulários */
+
+.form {
+  margin-bottom: 0.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+}
+
+.field-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
+  /* 16px evita o zoom automático do iOS ao focar o campo */
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: var(--radius);
+  padding: 0.625rem 0.75rem;
+}
+
+input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.button {
+  font: inherit;
+  font-weight: 600;
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.button:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.button[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.button-secondary {
+  color: var(--accent);
+  background: transparent;
+}
+
+.button-secondary:hover {
+  color: var(--accent-strong);
+  background: transparent;
+}
+
+/* Mensagens: ficam no DOM vazias e só aparecem quando recebem texto */
+
+.message:empty {
+  display: none;
+}
+
+.message {
+  margin: 0.75rem 0 0;
+}
+
+.message-error {
+  color: var(--error);
+  background: var(--error-bg);
+  border-left: 4px solid var(--error);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+}
+
+.message-success {
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* Resultados */
+
+.result {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.result-label {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.result-title {
+  margin-bottom: 0.5rem;
+}
+
+.code,
+.short-link {
+  font-family: var(--font-mono);
+}
+
+.short-link {
+  display: block;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+
+/* URLs podem ter até 2048 caracteres sem espaços: quebrar em qualquer ponto */
+.short-link,
+.long-link,
+.error-page p {
+  overflow-wrap: anywhere;
+}
+
+.destination {
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.metrics {
+  display: grid;
+  /* Celular: total na linha inteira e as duas datas lado a lado abaixo dele */
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.metric-main {
+  grid-column: 1 / -1;
+}
+
+/* Telas largas: as três métricas na mesma linha */
+@media (min-width: 40rem) {
+  .metrics {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .metric-main {
+    grid-column: auto;
+  }
+}
+
+.chart-title {
+  margin-top: 1.5rem;
+}
+
+.metric {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+}
+
+.metric dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.metric dd {
+  margin: 0.25rem 0 0;
+  font-weight: 600;
+}
+
+#metric-total {
+  font-size: 1.5rem;
+}
+
+.empty {
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Gráfico de barras: eixo Y à esquerda e colunas em flex, uma por dia */
+
+.chart {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.chart-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 10rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: right;
+  /* Alinha o texto com as linhas de grade do topo e da base */
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.chart-plot {
+  flex: 1;
+  min-width: 0;
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+  height: 10rem;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px solid var(--muted);
+}
+
+.chart-col {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 3rem;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.chart-bar {
+  width: 100%;
+  min-height: 2px;
+  background: var(--accent);
+  border-radius: 4px 4px 0 0;
+}
+
+.chart-col:hover .chart-bar {
+  background: var(--accent-strong);
+}
+
+/* Os rótulos seguem as colunas, mas podem ser mais largos que elas */
+.chart-labels {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  height: 1.5rem;
+}
+
+.chart-label-slot {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 3rem;
+}
+
+.chart-label {
+  position: absolute;
+  top: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* Primeiro e último rótulo presos às bordas para não sair do gráfico */
+.chart-label-start {
+  left: 0;
+  transform: none;
+}
+
+.chart-label-end {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+.chart-details summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td:last-child,
+.data-table th:last-child {
+  text-align: right;
+}
+
+/* Página de erro HTML (src/errors.js) */
+
+.error-page {
+  padding-top: 4rem;
+}
+
+.error-status {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.error-page .button {
+  margin-top: 0.5rem;
+}
+
+/* Celular */
+
+@media (max-width: 30rem) {
+  .container {
+    padding-top: 1.25rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .field-row {
+    flex-direction: column;
+  }
+}

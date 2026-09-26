@@ -4,8 +4,106 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Encurtador de Links</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
 </head>
 <body>
-  <h1>Encurtador de Links</h1>
+  <main class="container">
+    <header class="page-header">
+      <h1>Encurtador de Links</h1>
+      <p class="subtitle">Crie links curtos e acompanhe quantas vezes eles foram acessados.</p>
+    </header>
+
+    <section class="card" aria-labelledby="create-title">
+      <h2 id="create-title">Encurtar um link</h2>
+
+      <form id="create-form" class="form" novalidate>
+        <label for="url-input">URL original</label>
+        <div class="field-row">
+          <input id="url-input" name="url" type="url" inputmode="url"
+                 autocomplete="url" autocapitalize="off" spellcheck="false"
+                 placeholder="https://exemplo.com/pagina"
+                 aria-describedby="create-error">
+          <button id="create-button" type="submit" class="button">Encurtar</button>
+        </div>
+        <!-- Sempre presente no DOM: leitores de tela só anunciam role="alert" quando o conteúdo muda -->
+        <p id="create-error" class="message message-error" role="alert"></p>
+      </form>
+
+      <div id="create-result" class="result" hidden>
+        <p class="result-label">Seu link curto</p>
+        <a id="short-link" class="short-link" href="/"></a>
+        <div class="actions">
+          <button id="copy-button" type="button" class="button button-secondary">Copiar</button>
+          <button id="show-stats-button" type="button" class="button button-secondary">Ver estatísticas</button>
+        </div>
+      </div>
+
+      <p id="create-status" class="message message-success" role="status"></p>
+    </section>
+
+    <section class="card" aria-labelledby="stats-title">
+      <h2 id="stats-title">Estatísticas</h2>
+
+      <form id="stats-form" class="form" novalidate>
+        <label for="code-input">Link curto ou código</label>
+        <p id="code-hint" class="hint">Cole o link curto completo ou só o código de 6 caracteres.</p>
+        <div class="field-row">
+          <input id="code-input" name="code" type="text"
+                 autocomplete="off" autocapitalize="off" spellcheck="false"
+                 placeholder="abc123"
+                 aria-describedby="code-hint stats-error">
+          <button id="stats-button" type="submit" class="button">Consultar</button>
+        </div>
+        <p id="stats-error" class="message message-error" role="alert"></p>
+      </form>
+
+      <p id="stats-status" class="visually-hidden" role="status"></p>
+
+      <div id="stats-result" class="result" hidden>
+        <h3 id="stats-result-title" class="result-title" tabindex="-1">
+          Link <span id="stats-code" class="code"></span>
+        </h3>
+        <p class="destination">
+          Destino: <a id="stats-original" class="long-link" rel="noopener noreferrer"></a>
+        </p>
+
+        <dl class="metrics">
+          <div class="metric metric-main">
+            <dt>Total de acessos</dt>
+            <dd id="metric-total"></dd>
+          </div>
+          <div class="metric">
+            <dt>Último acesso</dt>
+            <dd id="metric-last"></dd>
+          </div>
+          <div class="metric">
+            <dt>Criado em</dt>
+            <dd id="metric-created"></dd>
+          </div>
+        </dl>
+        <p class="hint">Datas e horários no horário de Brasília.</p>
+
+        <h4 class="chart-title">Acessos por dia</h4>
+        <p id="stats-empty" class="empty" hidden></p>
+
+        <!-- O gráfico é só visual; a tabela abaixo traz os mesmos dados para leitores de tela -->
+        <div id="chart" class="chart" aria-hidden="true"></div>
+
+        <details id="chart-details" class="chart-details">
+          <summary>Ver acessos por dia em tabela</summary>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Dia</th>
+                <th scope="col">Acessos</th>
+              </tr>
+            </thead>
+            <tbody id="chart-table-body"></tbody>
+          </table>
+        </details>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
