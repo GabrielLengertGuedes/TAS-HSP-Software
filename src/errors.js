@@ -35,11 +35,18 @@ function sendErrorPage(res, status, message) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  <!-- Caminho absoluto: a página de erro pode ser servida em qualquer rota, como /a/b -->
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <h1>${title}</h1>
-  <p>${escapeHtml(message)}</p>
-  <p><a href="/">Criar um link curto</a></p>
+  <main class="container error-page">
+    <section class="card">
+      <p class="error-status">Erro ${status}</p>
+      <h1>${title}</h1>
+      <p>${escapeHtml(message)}</p>
+      <a class="button" href="/">Criar um link curto</a>
+    </section>
+  </main>
 </body>
 </html>`);
 }
