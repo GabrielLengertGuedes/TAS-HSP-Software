@@ -22,6 +22,14 @@ Para desenvolvimento, com reinício automático quando um arquivo muda:
 npm run dev
 ```
 
+Para rodar os testes automatizados:
+
+```bash
+npm test
+```
+
+Os testes usam o `node:test`, que já vem no Node, sem dependências extras. Cada arquivo de teste sobe o servidor num processo separado, numa porta livre e com um banco temporário próprio, apagado ao final. O `data/links.db` não é usado nem alterado. Os testes passam em qualquer horário e com qualquer fuso configurado na máquina.
+
 A aplicação fica em `http://localhost:3000`.
 
 O banco SQLite é criado sozinho na primeira execução, em `data/links.db`, junto com as tabelas e o índice. A pasta `data/` está no `.gitignore`.
@@ -32,6 +40,7 @@ O banco SQLite é criado sozinho na primeira execução, em `data/links.db`, jun
 | --- | --- | --- |
 | `PORT` | `3000` | Porta do servidor. |
 | `BASE_URL` | protocolo e host da requisição | Base usada para montar o `shortUrl` nas respostas. Informe sem barra no final, por exemplo `https://meu.dominio`. |
+| `DB_PATH` | `data/links.db` | Caminho do arquivo SQLite. Os testes usam para apontar para um banco temporário. |
 
 Exemplo no bash:
 
@@ -207,6 +216,11 @@ src/
     code.js           geração e validação do código
     url.js            validação da URL
     date.js           conversão de datas para o dia de Brasília
+test/
+  links.test.js       criação de links, validações, colisão e 404 da API
+  redirect.test.js    redirecionamento, HEAD, acessos em paralelo, rollback e 404 HTML
+  stats.test.js       estatísticas, caso das 22h e independência do fuso
+  helpers/            sobe o servidor com banco temporário e força colisão
 docs/ia/              conversas com a IA em cada etapa
 data/                 banco SQLite, criado na execução e fora do git
 ```
@@ -247,7 +261,9 @@ data/                 banco SQLite, criado na execução e fora do git
 
 ## Como foi testado
 
-Cada etapa foi verificada com um script em Node escrito fora do repositório, rodando contra o servidor numa porta temporária e lendo o banco numa conexão separada. Nenhum arquivo de `src/` foi alterado para testar. Os scripts criavam os próprios dados e os removiam ao final. Eles não fazem parte do repositório.
+As verificações abaixo agora estão no repositório, em `test/`, e rodam com `npm test`. A única mudança em `src/` para isso foi a variável `DB_PATH` no `database.js`, que mantém `data/links.db` como padrão. A colisão continua sendo forçada só no processo do servidor de teste, por um arquivo carregado com `node --require` (`test/helpers/force-collision.js`), sem alterar o `generateCode`. Os testes também cobrem o caso em que as 5 tentativas colidem (`500 CODE_GENERATION_FAILED`). O teste de fuso consulta o mesmo banco por servidores com `TZ` `Asia/Tokyo`, `UTC`, `America/Los_Angeles` e `America/Sao_Paulo`.
+
+Durante o desenvolvimento, cada etapa foi verificada com um script em Node escrito fora do repositório, rodando contra o servidor numa porta temporária e lendo o banco numa conexão separada. Nenhum arquivo de `src/` foi alterado para testar. Os scripts criavam os próprios dados e os removiam ao final. Eles não fazem parte do repositório, e a suíte em `test/` cobre o que eles verificavam nas etapas de criação, redirecionamento e estatísticas.
 
 **Criação de links (`POST /api/links`), 20 verificações.**
 - Colisão: o script inseriu no banco um link com código conhecido e fez o sorteio devolver esse código na primeira tentativa, trocando `crypto.randomInt` só dentro do processo do teste. A resposta foi `201` com outro código, o que prova que o retry funciona.
@@ -286,8 +302,6 @@ Cada etapa foi verificada com um script em Node escrito fora do repositório, ro
 **Autenticação.** Não há contas nem dono do link. A consequência é que qualquer pessoa que tenha o código consegue ver as estatísticas dele. Os dados expostos são poucos (URL de destino, contagem e datas, sem IP nem user-agent), mas o código de 6 caracteres não deve ser tratado como segredo. Implementar contas, sessões e senhas aumentaria muito o escopo, e priorizei o núcleo do encurtador.
 
 **Rate limiting.** Não há limite de requisições por cliente. Alguém pode criar links em massa ou tentar adivinhar códigos para ver estatísticas. Uma proteção adequada depende de onde a aplicação roda (proxy reverso, vários processos), então preferi deixar para quando houver um ambiente de produção definido, em vez de um limite em memória que só vale para uma instância.
-
-**Testes automatizados no repositório.** As verificações foram feitas com scripts descartáveis em cada etapa, descritos acima, e não entraram no repositório. Transformá-las em uma suíte com `npm test` pediria organizar os scripts, isolar o banco de teste (hoje o caminho do banco é fixo em `data/links.db`) e possivelmente adicionar dependências de teste. Priorizei entregar as funcionalidades verificadas.
 
 **Deploy.** A aplicação roda localmente. A variável `BASE_URL` já permite gerar os links com o domínio público, mas publicar exigiria escolher hospedagem com disco persistente para o SQLite, HTTPS e o proxy reverso. Ficou fora por não ser pedido e por tempo.
 
