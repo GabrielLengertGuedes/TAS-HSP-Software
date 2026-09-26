@@ -2,11 +2,11 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 
-const dataDir = path.join(__dirname, '..', 'data');
-const dbPath = path.join(dataDir, 'links.db');
+// DB_PATH permite usar outro arquivo, por exemplo um banco separado nos testes
+const dbPath = process.env.DB_PATH || path.join(__dirname, '..', 'data', 'links.db');
 
 // Garante que a pasta do banco existe antes de abrir a conexão
-fs.mkdirSync(dataDir, { recursive: true });
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 const db = new Database(dbPath);
 
