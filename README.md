@@ -312,7 +312,7 @@ Durante o desenvolvimento, cada etapa foi verificada com um script em Node escri
 Usei duas ferramentas de IA, com papéis diferentes.
 
 - **Claude Code**, no VS Code, para implementar. Todas as conversas estão em `docs/ia/`, uma por etapa.
-- **Claude**, no chat, como revisor. Usei para planejar a ordem das etapas, escrever parte dos prompts enviados ao Claude Code e revisar os planos e o código antes de aprovar. Conversa completa: [LINK DA CONVERSA]
+- **Claude**, no chat, como revisor. Usei para planejar a ordem das etapas, escrever parte dos prompts enviados ao Claude Code e revisar os planos e o código antes de aprovar. Conversa completa: [https://claude.ai/share/6765aa00-7c69-488b-95b9-a9d9bdd9b980]
 
 ### Como trabalhei
 
